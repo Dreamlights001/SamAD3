@@ -1,0 +1,294 @@
+# 基础配置文件
+
+# 路径配置
+paths:
+  # 预训练权重路径
+  pretrained_weights: ~/autodl-tmp/pre-training/sam3.pth
+  # 数据集路径
+  datasets_root: ~/autodl-tmp/datasets
+  # 输出目录
+  output_dir: ./output
+  # 日志目录
+  log_dir: ./logs
+  # 可视化输出目录
+  visualization_dir: ./assets/visualizations
+
+# 模型配置
+model:
+  # SAM3模型配置
+  sam3:
+    # 模型大小：base, large, huge
+    model_size: "base"
+    # 设备：cuda, cpu
+    device: "cuda"
+    # 是否使用半精度
+    use_fp16: true
+    # 是否使用梯度检查点
+    use_gradient_checkpointing: false
+    # 置信度阈值
+    confidence_threshold: 0.5
+    # 掩码输出大小
+    mask_size: 512
+
+# 提示工程配置
+prompt:
+  # 基础异常提示词
+  base_prompts:
+    - "异常区域"
+    - "缺陷区域"
+    - "损坏部分"
+    - "不规则区域"
+    - "异常纹理"
+  
+  # 数据集特定提示词
+  dataset_specific:
+    # MVTec数据集提示词
+    mvtec:
+      bottle:
+        - "瓶子上的裂缝"
+        - "液体泄漏"
+        - "标签错误"
+        - "瓶盖缺失"
+      cable:
+        - "电缆外层破损"
+        - "铜丝裸露"
+        - "电缆扭曲"
+        - "连接处松动"
+      capsule:
+        - "胶囊变形"
+        - "胶囊表面划痕"
+        - "胶囊颜色异常"
+        - "胶囊破损"
+      carpet:
+        - "地毯上的污渍"
+        - "地毯纤维断裂"
+        - "图案不完整"
+        - "纹理异常"
+      grid:
+        - "网格线断裂"
+        - "网格交点缺失"
+        - "网格变形"
+        - "网格污渍"
+      hazelnut:
+        - "坚果表面缺陷"
+        - "坚果形状异常"
+        - "裂缝"
+        - "孔洞"
+      leather:
+        - "皮革划痕"
+        - "皮革撕裂"
+        - "皮革纹理异常"
+        - "皮革污渍"
+      metal_nut:
+        - "螺母螺纹损坏"
+        - "表面划痕"
+        - "螺母变形"
+        - "生锈"
+      pill:
+        - "药片碎裂"
+        - "药片表面不规则"
+        - "药片颜色异常"
+        - "药片缺失部分"
+      screw:
+        - "螺纹损坏"
+        - "头部变形"
+        - "表面划痕"
+        - "生锈"
+      tile:
+        - "瓷砖裂缝"
+        - "瓷砖污渍"
+        - "边缘不规则"
+        - "表面划痕"
+      toothbrush:
+        - "刷毛缺失"
+        - "手柄断裂"
+        - "刷毛弯曲"
+        - "表面划痕"
+      transistor:
+        - "引脚弯曲"
+        - "表面划痕"
+        - "标签错误"
+        - "芯片破损"
+      wood:
+        - "木材裂缝"
+        - "木材污渍"
+        - "纹理异常"
+        - "结疤缺陷"
+      zipper:
+        - "拉链牙齿缺失"
+        - "拉链滑块损坏"
+        - "拉链带撕裂"
+        - "金属部分生锈"
+    
+    # VisA数据集提示词
+    visa:
+      candle:
+        - "蜡烛裂缝"
+        - "蜡烛变形"
+        - "表面不规则"
+        - "颜色异常"
+      capsule:
+        - "胶囊表面缺陷"
+        - "胶囊变形"
+        - "颜色不一致"
+        - "破损"
+      chocolate:
+        - "巧克力表面裂缝"
+        - "形状不规则"
+        - "颜色异常"
+        - "缺陷"
+      cookie:
+        - "饼干破碎"
+        - "形状不规则"
+        - "表面缺陷"
+        - "巧克力涂层不完整"
+      cracker:
+        - "饼干裂缝"
+        - "形状不规则"
+        - "表面缺陷"
+        - "颜色异常"
+      pasta:
+        - "面条断裂"
+        - "形状不规则"
+        - "颜色异常"
+        - "粘连"
+      rice:
+        - "米饭团块"
+        - "颜色不一致"
+        - "杂质"
+        - "形状异常"
+      sesame:
+        - "芝麻分布不均匀"
+        - "表面缺陷"
+        - "颜色异常"
+        - "形状不规则"
+
+# 训练配置
+training:
+  # 训练参数
+  batch_size: 4
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_epochs: 50
+  # 学习率调度
+  lr_scheduler:
+    type: "cosine"
+    warmup_epochs: 5
+    min_lr: 1e-6
+  # 优化器
+  optimizer:
+    type: "adamw"
+    betas: [0.9, 0.999]
+  # 数据增强
+  augmentation:
+    resize: [512, 512]
+    crop_size: 512
+    rotate: 10
+    flip: true
+    brightness: 0.1
+    contrast: 0.1
+    saturation: 0.1
+  # 微调参数
+  fine_tune:
+    # 微调组件：prompt_encoder, mask_decoder, both
+    components: "both"
+    # 冻结参数
+    freeze_visual_encoder: true
+    # 保存频率
+    save_freq: 10
+    # 是否使用混合精度
+    use_mixed_precision: true
+
+# 测试配置
+testing:
+  # 测试参数
+  batch_size: 8
+  # 评估指标
+  metrics:
+    image_auroc: true
+    pixel_auroc: true
+    pixel_ap: true
+    pixel_aupro: true
+    f1_score: true
+    iou: true
+    dice: true
+  # 零样本配置
+  zero_shot:
+    # 源数据集
+    source_dataset: "mvtec"
+    # 目标数据集
+    target_dataset: "visa"
+    # 是否使用混合提示
+    use_hybrid_prompts: true
+    # 相似类别映射路径
+    category_mapping_path: "./configs/category_mappings.yaml"
+
+# 推理配置
+inference:
+  # 推理参数
+  batch_size: 1
+  # 预处理
+  preprocessing:
+    resize: [512, 512]
+    normalize: true
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+  # 后处理
+  postprocessing:
+    # 是否应用高斯平滑
+    apply_gaussian_blur: true
+    # 高斯核大小
+    gaussian_kernel_size: 3
+    # 是否应用阈值
+    apply_threshold: true
+    # 默认阈值
+    default_threshold: 0.5
+    # 是否优化阈值
+    optimize_threshold: false
+
+# 可视化配置
+visualization:
+  # 可视化参数
+  save_images: true
+  save_heatmaps: true
+  save_comparison: true
+  # t-SNE配置
+  tsne:
+    enable: false
+    perplexity: 30
+    n_iter: 300
+  # 保存格式
+  format: "png"
+  # DPI
+  dpi: 300
+  # 是否显示中文
+  show_chinese: true
+
+# 日志配置
+logging:
+  # 日志级别
+  level: "INFO"
+  # 日志格式
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  # 是否保存日志到文件
+  save_to_file: true
+  # 日志文件路径
+  file_path: "./logs/runtime.log"
+
+# 随机性控制
+randomness:
+  # 随机种子
+  seed: 122
+  # 是否确定性
+  deterministic: true
+  # 基准CUDA设置
+  cudnn_benchmark: false
+
+# 分布式配置
+distributed:
+  # 是否使用分布式训练
+  enabled: false
+  # 分布式后端
+  backend: "nccl"
+  # 本地排名
+  local_rank: 0

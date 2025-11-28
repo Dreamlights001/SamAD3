@@ -1,0 +1,130 @@
+# 数据集类别映射配置
+# 用于零样本异常检测中的跨数据集类别匹配
+
+# MVTec 到 VisA 的类别映射
+mvtec_to_visa:
+  # 直接匹配的类别
+  capsule: "capsule"
+  
+  # 相似类别匹配
+  hazelnut: "chocolate"  # 都是食品，都关注表面缺陷
+  pill: "pasta"         # 都是小型物体，有形状和表面要求
+  cookie: "cracker"      # 都是烘焙食品，关注完整性
+  
+  # 材质相似的类别
+  leather: "chocolate"   # 都有表面纹理要求
+  wood: "candle"        # 都有自然纹理和形状变化
+  
+  # 功能相似的类别
+  screw: "capsule"       # 都有几何精度要求
+  metal_nut: "capsule"  # 都有精密制造要求
+  transistor: "capsule"  # 都有电子元件精密要求
+
+# VisA 到 MVTec 的类别映射
+visa_to_mvtec:
+  # 直接匹配的类别
+  capsule: "capsule"
+  
+  # 相似类别匹配
+  chocolate: "hazelnut"  # 都是食品，都关注表面缺陷
+  pasta: "pill"         # 都是小型物体，有形状要求
+  cracker: "cookie"      # 都是烘焙食品，关注完整性
+  candle: "wood"        # 都有表面纹理和形状要求
+  
+  # 特殊处理的类别
+  rice: "carpet"        # 都关注纹理的均匀性
+  sesame: "pill"        # 都关注分布和完整性
+  
+  # 默认映射
+  default: "pill"        # 默认映射到形状规则的物体类别
+
+# 跨数据集的通用提示词映射
+common_prompt_mapping:
+  # 形状相关的提示词
+  "形状异常": ["shape anomaly", "deformed shape", "irregular shape"]
+  "变形": ["deformation", "distortion", "warping"]
+  
+  # 表面相关的提示词
+  "表面缺陷": ["surface defect", "surface flaw", "imperfection"]
+  "划痕": ["scratch", "scuff", "mark"]
+  "裂缝": ["crack", "fracture", "split"]
+  "孔洞": ["hole", "pore", "void"]
+  
+  # 颜色相关的提示词
+  "颜色异常": ["color anomaly", "discoloration", "unusual color"]
+  "污渍": ["stain", "contamination", "dirt"]
+  
+  # 完整性相关的提示词
+  "断裂": ["broken", "fractured", "shattered"]
+  "缺失": ["missing part", "incomplete", "absent"]
+  "损坏": ["damaged", "destroyed", "ruined"]
+
+# 类别相似度矩阵配置
+similarity_config:
+  # 相似度计算方法：cosine, euclidean, manhattan
+  method: "cosine"
+  # 阈值设置
+  similarity_threshold: 0.7
+  # 最大推荐相似类别数量
+  max_recommendations: 3
+
+# 零样本检测策略配置
+zero_shot_strategies:
+  # 提示词策略
+  prompt_strategy:
+    # 策略类型：hybrid, dataset_specific, generic
+    type: "hybrid"
+    # 是否使用源数据集的特定提示词
+    use_source_prompts: true
+    # 是否使用目标数据集的通用提示词
+    use_target_generic_prompts: true
+    # 是否使用相似度加权
+    use_similarity_weighting: true
+  
+  # 推理策略
+  inference_strategy:
+    # 是否聚合多个提示词的结果
+    aggregate_results: true
+    # 聚合方法：mean, max, weighted_mean
+    aggregation_method: "weighted_mean"
+    # 是否应用上下文感知
+    context_aware: true
+    # 置信度融合方法
+    confidence_fusion: "softmax"
+
+# 跨数据集特征迁移配置
+feature_transfer:
+  # 是否启用特征对齐
+  enabled: false
+  # 对齐方法
+  alignment_method: "maximum_mean_discrepancy"
+  # 特征提取层
+  feature_extraction_layer: "visual_encoder"
+  # 正则化参数
+  regularization_strength: 0.1
+
+# 自适应阈值配置
+adaptive_threshold:
+  # 是否使用自适应阈值
+  enabled: true
+  # 阈值调整方法：otsu, percentile, adaptive
+  method: "otsu"
+  # 百分位数（当method为percentile时使用）
+  percentile: 95
+  # 滑动窗口大小（当method为adaptive时使用）
+  window_size: 25
+  # 常数调整值
+  constant: 0.05
+
+# 领域适应配置
+domain_adaptation:
+  # 是否启用领域适应
+  enabled: false
+  # 适应方法：mcd, dann, ddc
+  method: "dann"
+  # 判别器学习率
+  discriminator_lr: 1e-4
+  # 适应强度权重
+  adaptation_weight: 0.1
+  # 迭代次数
+  adaptation_epochs: 10
