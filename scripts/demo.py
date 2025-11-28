@@ -1,4 +1,5 @@
 import os
+import sys
 import argparse
 import torch
 import numpy as np
@@ -9,7 +10,7 @@ from typing import List, Optional
 # 添加项目根目录到Python路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from model import get_sam3_detector
+from model.inference import get_sam3_detector
 from utils.prompt_engineering import get_prompt_generator
 
 def parse_args():

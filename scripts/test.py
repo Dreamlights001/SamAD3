@@ -12,8 +12,8 @@ import torchvision.transforms as transforms
 # 添加项目根目录到Python路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from model import get_sam3_detector
-from dataset import get_anomaly_dataset
+from model.inference import get_sam3_detector
+from dataset.base_dataset import get_anomaly_dataset
 from utils.prompt_engineering import get_prompt_generator
 from utils.evaluation import compute_evaluation_metrics
 
