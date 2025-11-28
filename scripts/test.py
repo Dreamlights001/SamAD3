@@ -1,4 +1,5 @@
 import os
+import sys
 import argparse
 import torch
 import numpy as np
@@ -196,5 +197,4 @@ def main():
     run_test(args)
 
 if __name__ == '__main__':
-    import sys
     main()
