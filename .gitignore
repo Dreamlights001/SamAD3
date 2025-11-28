@@ -1,4 +1,4 @@
 .idea/
 .venv/
-.model/__pycache__
-.model/sam3/__pycache__
+model/__pycache__
+model/sam3/__pycache__
