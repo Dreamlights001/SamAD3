@@ -3,8 +3,47 @@
 """Triton kernel for euclidean distance transform (EDT)"""
 
 import torch
-import triton
-import triton.language as tl
+
+try:
+    import triton
+    import triton.language as tl
+    has_triton = True
+except ImportError:
+    # Fallback to OpenCV when triton is not available
+    import cv2
+    import numpy as np
+    has_triton = False
+    print("Warning: Triton not available, using OpenCV distanceTransform as fallback")
+    
+    # Define a minimal version of edt_triton that only uses OpenCV
+    def edt_triton(data: torch.Tensor):
+        """
+        Computes the Euclidean Distance Transform (EDT) of a batch of binary images using OpenCV.
+        
+        Args:
+            data: A tensor of shape (B, H, W) representing a batch of binary images.
+            
+        Returns:
+            A tensor of the same shape as data containing the EDT.
+        """
+        assert data.dim() == 3
+        device = data.device
+        data_np = data.cpu().numpy()
+        results = []
+        
+        for i in range(data_np.shape[0]):
+            # OpenCV expects 2D image, and the input should be 8-bit with 0 for background and 255 for foreground
+            # We'll invert since OpenCV computes distance to closest zero pixel
+            img = (data_np[i] > 0).astype(np.uint8) * 255
+            dist = cv2.distanceTransform(img, cv2.DIST_L2, 0)
+            results.append(dist)
+            
+        return torch.tensor(np.stack(results), device=device)
+    
+    # Skip rest of the file when Triton is not available
+    __all__ = ['edt_triton']
+    import sys
+    sys.exit(0)  # This skips the rest of the file
 
 """
 Disclaimer: This implementation is not meant to be extremely efficient. A CUDA kernel would likely be more efficient.
@@ -125,6 +164,23 @@ def edt_triton(data: torch.Tensor):
         A tensor of the same shape as data containing the EDT.
         It should be equivalent to a batched version of cv2.distanceTransform(input, cv2.DIST_L2, 0)
     """
+    if not has_triton:
+        # Fallback implementation using OpenCV
+        assert data.dim() == 3
+        device = data.device
+        data_np = data.cpu().numpy()
+        results = []
+        
+        for i in range(data_np.shape[0]):
+            # OpenCV expects 2D image, and the input should be 8-bit with 0 for background and 255 for foreground
+            # We'll invert since OpenCV computes distance to closest zero pixel
+            img = (data_np[i] > 0).astype(np.uint8) * 255
+            dist = cv2.distanceTransform(img, cv2.DIST_L2, 0)
+            results.append(dist)
+            
+        return torch.tensor(np.stack(results), device=device)
+    
+    # Original Triton implementation
     assert data.dim() == 3
     assert data.is_cuda
     B, H, W = data.shape
