@@ -17,7 +17,7 @@ ftfy==6.1.1  # SAM3依赖
 
 # PyTorch相关 - 使用官方推荐版本
 torch==2.7.0
-torchvision==0.16.0
+torchvision==0.22.0
 torchaudio==2.7.0
 
 # 安装PyTorch时请使用以下命令以确保CUDA 12.6支持:
