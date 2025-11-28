@@ -3,7 +3,7 @@
 import json
 import os
 
-from sam3.agent.agent_core import agent_inference
+from ..agent.agent_core import agent_inference
 
 
 def run_single_image_inference(

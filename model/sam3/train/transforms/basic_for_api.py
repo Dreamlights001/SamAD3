@@ -18,8 +18,8 @@ import torchvision.transforms.v2.functional as Fv2
 
 from PIL import Image as PILImage
 
-from sam3.model.box_ops import box_xyxy_to_cxcywh, masks_to_boxes
-from sam3.train.data.sam3_image_dataset import Datapoint
+from ..model.box_ops import box_xyxy_to_cxcywh, masks_to_boxes
+from ..train.data.sam3_image_dataset import Datapoint
 from torchvision.transforms import InterpolationMode
 
 

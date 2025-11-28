@@ -12,11 +12,11 @@ import numpy as np
 import pycocotools.mask as mask_util
 import torch
 from pycocotools.cocoeval import COCOeval
-from sam3.eval.cgf1_eval import CGF1Eval
-from sam3.eval.coco_eval_offline import convert_to_xywh
-from sam3.model.box_ops import box_xywh_inter_union
-from sam3.train.masks_ops import rle_encode
-from sam3.train.utils import distributed as dist
+from ..eval.cgf1_eval import CGF1Eval
+from ..eval.coco_eval_offline import convert_to_xywh
+from ..model.box_ops import box_xywh_inter_union
+from ..train.masks_ops import rle_encode
+from ..train.utils import distributed as dist
 from typing_extensions import override
 
 try:

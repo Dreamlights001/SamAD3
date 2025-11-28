@@ -17,7 +17,7 @@ from hydra.utils import instantiate
 from iopath.common.file_io import g_pathmgr
 from omegaconf import OmegaConf
 
-from sam3.train.utils.train_utils import makedir, register_omegaconf_resolvers
+from ..train.utils.train_utils import makedir, register_omegaconf_resolvers
 from tqdm import tqdm
 
 

@@ -4,7 +4,7 @@ from PIL import Image
 import numpy as np
 
 # 导入SAM3相关组件
-from .sam3.model.model_builder import build_sam3_image_model
+from .sam3.model_builder import build_sam3_image_model
 
 
 class SAM3AnomalyDetector:

@@ -310,7 +310,7 @@ def _create_sam3_model(
 
     matcher = None
     if not eval_mode:
-        from sam3.train.matcher import BinaryHungarianMatcherV2
+        from ..train.matcher import BinaryHungarianMatcherV2
 
         matcher = BinaryHungarianMatcherV2(
             focal=True,

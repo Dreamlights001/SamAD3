@@ -2,9 +2,9 @@
 
 import torch
 
-from sam3.model.model_misc import SAM3Output
+from ..model.model_misc import SAM3Output
 
-from sam3.train.utils.distributed import get_world_size
+from ..train.utils.distributed import get_world_size
 
 from .loss_fns import CORE_LOSS_KEY, Det2TrkAssoc, Masks
 

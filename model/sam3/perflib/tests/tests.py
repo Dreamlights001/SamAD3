@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 import torch
 from PIL import Image
-from sam3.perflib.masks_ops import masks_to_boxes
+from ..perflib.masks_ops import masks_to_boxes
 
 
 class TestMasksToBoxes:

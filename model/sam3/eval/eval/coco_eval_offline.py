@@ -14,7 +14,7 @@ from collections import defaultdict
 import torch
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
-from sam3.train.utils.distributed import is_main_process
+from ..train.utils.distributed import is_main_process
 
 try:
     from tidecv import datasets, TIDE

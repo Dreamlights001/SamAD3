@@ -8,11 +8,11 @@ import torch.distributed
 import torch.nn.functional as F
 import torchmetrics
 
-from sam3.model import box_ops
+from ..model import box_ops
 
-from sam3.model.data_misc import interpolate
+from ..model.data_misc import interpolate
 
-from sam3.train.loss.sigmoid_focal_loss import (
+from ..train.loss.sigmoid_focal_loss import (
     triton_sigmoid_focal_loss,
     triton_sigmoid_focal_loss_reduce,
 )

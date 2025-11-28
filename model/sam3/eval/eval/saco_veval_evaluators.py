@@ -7,17 +7,17 @@ from typing import Dict, Optional, Sequence, Tuple
 
 import numpy as np
 import pycocotools.mask
-from sam3.eval.cgf1_eval import CGF1_METRICS
-from sam3.eval.conversion_util import (
+from ..eval.cgf1_eval import CGF1_METRICS
+from ..eval.conversion_util import (
     convert_ytbvis_to_cocovid_gt,
     convert_ytbvis_to_cocovid_pred,
 )
-from sam3.eval.hota_eval_toolkit.run_ytvis_eval import run_ytvis_eval
-from sam3.eval.teta_eval_toolkit import config, Evaluator, metrics
-from sam3.eval.teta_eval_toolkit.datasets import COCO, TAO
-from sam3.eval.ytvis_coco_wrapper import YTVIS
-from sam3.eval.ytvis_eval import VideoDemoF1Eval, YTVISeval
-from sam3.train.nms_helper import process_frame_level_nms, process_track_level_nms
+from ..eval.hota_eval_toolkit.run_ytvis_eval import run_ytvis_eval
+from ..eval.teta_eval_toolkit import config, Evaluator, metrics
+from ..eval.teta_eval_toolkit.datasets import COCO, TAO
+from ..eval.ytvis_coco_wrapper import YTVIS
+from ..eval.ytvis_eval import VideoDemoF1Eval, YTVISeval
+from ..train.nms_helper import process_frame_level_nms, process_track_level_nms
 
 
 def _get_metric_index(metric_name: str, iou_threshold: Optional[float] = None) -> int:

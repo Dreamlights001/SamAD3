@@ -20,9 +20,9 @@ from typing import Any, Optional
 import pycocotools.mask as mask_utils
 import torch
 from iopath.common.file_io import g_pathmgr
-from sam3.eval.coco_eval_offline import convert_to_xywh
-from sam3.train.masks_ops import rle_encode
-from sam3.train.utils.distributed import (
+from ..eval.coco_eval_offline import convert_to_xywh
+from ..train.masks_ops import rle_encode
+from ..train.utils.distributed import (
     all_gather,
     gather_to_rank_0_via_filesys,
     get_rank,
